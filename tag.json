@@ -1,4 +1,10 @@
 {
+    "__meta__": {
+        "version": [
+            2,
+            0
+        ]
+    },
     "header_types": [
         {
             "name": "standard_metadata_t",
@@ -173,7 +179,8 @@
                     "transition_key": [],
                     "transitions": [
                         {
-                            "value": "default",
+                            "type": "default",
+                            "value": null,
                             "mask": null,
                             "next_state": "parse_ethernet"
                         }
@@ -196,7 +203,8 @@
                     "transition_key": [],
                     "transitions": [
                         {
-                            "value": "default",
+                            "type": "default",
+                            "value": null,
                             "mask": null,
                             "next_state": "parse_ipv4"
                         }
@@ -227,11 +235,13 @@
                     ],
                     "transitions": [
                         {
+                            "type": "hexstr",
                             "value": "0x0800",
                             "mask": null,
                             "next_state": null
                         },
                         {
+                            "type": "hexstr",
                             "value": "0x0037",
                             "mask": null,
                             "next_state": "parse_tag"
@@ -255,7 +265,8 @@
                     "transition_key": [],
                     "transitions": [
                         {
-                            "value": "default",
+                            "type": "default",
+                            "value": null,
                             "mask": null,
                             "next_state": null
                         }
@@ -264,6 +275,7 @@
             ]
         }
     ],
+    "parse_vsets": [],
     "deparsers": [
         {
             "name": "deparser",
@@ -278,8 +290,87 @@
     "meter_arrays": [],
     "actions": [
         {
-            "name": "ipv42tag",
+            "name": "tag_mid_action",
             "id": 0,
+            "runtime_data": [
+                {
+                    "name": "output_port",
+                    "bitwidth": 9
+                }
+            ],
+            "primitives": [
+                {
+                    "op": "modify_field",
+                    "parameters": [
+                        {
+                            "type": "field",
+                            "value": [
+                                "standard_metadata",
+                                "egress_spec"
+                            ]
+                        },
+                        {
+                            "type": "runtime_data",
+                            "value": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "tag_tail_action",
+            "id": 1,
+            "runtime_data": [
+                {
+                    "name": "output_port",
+                    "bitwidth": 9
+                }
+            ],
+            "primitives": [
+                {
+                    "op": "modify_field",
+                    "parameters": [
+                        {
+                            "type": "field",
+                            "value": [
+                                "standard_metadata",
+                                "egress_spec"
+                            ]
+                        },
+                        {
+                            "type": "runtime_data",
+                            "value": 0
+                        }
+                    ]
+                },
+                {
+                    "op": "shift_left",
+                    "parameters": [
+                        {
+                            "type": "field",
+                            "value": [
+                                "tag_head",
+                                "tags"
+                            ]
+                        },
+                        {
+                            "type": "field",
+                            "value": [
+                                "tag_head",
+                                "tags"
+                            ]
+                        },
+                        {
+                            "type": "hexstr",
+                            "value": "0x8"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "ipv42tag",
+            "id": 2,
             "runtime_data": [
                 {
                     "name": "tags",
@@ -364,85 +455,6 @@
                         {
                             "type": "runtime_data",
                             "value": 1
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "tag_tail_action",
-            "id": 1,
-            "runtime_data": [
-                {
-                    "name": "output_port",
-                    "bitwidth": 9
-                }
-            ],
-            "primitives": [
-                {
-                    "op": "modify_field",
-                    "parameters": [
-                        {
-                            "type": "field",
-                            "value": [
-                                "standard_metadata",
-                                "egress_spec"
-                            ]
-                        },
-                        {
-                            "type": "runtime_data",
-                            "value": 0
-                        }
-                    ]
-                },
-                {
-                    "op": "shift_left",
-                    "parameters": [
-                        {
-                            "type": "field",
-                            "value": [
-                                "tag_head",
-                                "tags"
-                            ]
-                        },
-                        {
-                            "type": "field",
-                            "value": [
-                                "tag_head",
-                                "tags"
-                            ]
-                        },
-                        {
-                            "type": "hexstr",
-                            "value": "0x8"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "tag_mid_action",
-            "id": 2,
-            "runtime_data": [
-                {
-                    "name": "output_port",
-                    "bitwidth": 9
-                }
-            ],
-            "primitives": [
-                {
-                    "op": "modify_field",
-                    "parameters": [
-                        {
-                            "type": "field",
-                            "value": [
-                                "standard_metadata",
-                                "egress_spec"
-                            ]
-                        },
-                        {
-                            "type": "runtime_data",
-                            "value": 0
                         }
                     ]
                 }
@@ -603,6 +615,7 @@
                     "base_default_next": "_condition_2"
                 }
             ],
+            "action_profiles": [],
             "conditionals": [
                 {
                     "name": "_condition_0",
@@ -703,6 +716,7 @@
             "id": 1,
             "init_table": null,
             "tables": [],
+            "action_profiles": [],
             "conditionals": []
         }
     ],
