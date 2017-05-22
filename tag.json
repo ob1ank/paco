@@ -341,36 +341,8 @@
             ]
         },
         {
-            "name": "tag_mid_action",
-            "id": 1,
-            "runtime_data": [
-                {
-                    "name": "output_port",
-                    "bitwidth": 9
-                }
-            ],
-            "primitives": [
-                {
-                    "op": "modify_field",
-                    "parameters": [
-                        {
-                            "type": "field",
-                            "value": [
-                                "standard_metadata",
-                                "egress_spec"
-                            ]
-                        },
-                        {
-                            "type": "runtime_data",
-                            "value": 0
-                        }
-                    ]
-                }
-            ]
-        },
-        {
             "name": "ipv42tag",
-            "id": 2,
+            "id": 1,
             "runtime_data": [
                 {
                     "name": "tags",
@@ -461,8 +433,154 @@
             ]
         },
         {
-            "name": "tag0_mid_action",
+            "name": "multi_tag",
+            "id": 2,
+            "runtime_data": [
+                {
+                    "name": "number",
+                    "bitwidth": 32
+                },
+                {
+                    "name": "new_tag",
+                    "bitwidth": 32
+                },
+                {
+                    "name": "output_port",
+                    "bitwidth": 9
+                }
+            ],
+            "primitives": [
+                {
+                    "op": "bit_and",
+                    "parameters": [
+                        {
+                            "type": "field",
+                            "value": [
+                                "tag_head",
+                                "tags"
+                            ]
+                        },
+                        {
+                            "type": "field",
+                            "value": [
+                                "tag_head",
+                                "tags"
+                            ]
+                        },
+                        {
+                            "type": "hexstr",
+                            "value": "0xffffff"
+                        }
+                    ]
+                },
+                {
+                    "op": "shift_right",
+                    "parameters": [
+                        {
+                            "type": "field",
+                            "value": [
+                                "tag_head",
+                                "tags"
+                            ]
+                        },
+                        {
+                            "type": "field",
+                            "value": [
+                                "tag_head",
+                                "tags"
+                            ]
+                        },
+                        {
+                            "type": "expression",
+                            "value": {
+                                "type": "expression",
+                                "value": {
+                                    "op": "*",
+                                    "left": {
+                                        "type": "hexstr",
+                                        "value": "0x8"
+                                    },
+                                    "right": {
+                                        "type": "local",
+                                        "value": 0
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "op": "bit_or",
+                    "parameters": [
+                        {
+                            "type": "field",
+                            "value": [
+                                "tag_head",
+                                "tags"
+                            ]
+                        },
+                        {
+                            "type": "field",
+                            "value": [
+                                "tag_head",
+                                "tags"
+                            ]
+                        },
+                        {
+                            "type": "runtime_data",
+                            "value": 1
+                        }
+                    ]
+                },
+                {
+                    "op": "modify_field",
+                    "parameters": [
+                        {
+                            "type": "field",
+                            "value": [
+                                "standard_metadata",
+                                "egress_spec"
+                            ]
+                        },
+                        {
+                            "type": "runtime_data",
+                            "value": 2
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "tag_mid_action",
             "id": 3,
+            "runtime_data": [
+                {
+                    "name": "output_port",
+                    "bitwidth": 9
+                }
+            ],
+            "primitives": [
+                {
+                    "op": "modify_field",
+                    "parameters": [
+                        {
+                            "type": "field",
+                            "value": [
+                                "standard_metadata",
+                                "egress_spec"
+                            ]
+                        },
+                        {
+                            "type": "runtime_data",
+                            "value": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "tag0_mid_action",
+            "id": 4,
             "runtime_data": [
                 {
                     "name": "output_port",
@@ -606,11 +724,13 @@
                     ],
                     "actions": [
                         "tag_mid_action",
-                        "tag_tail_action"
+                        "tag_tail_action",
+                        "multi_tag"
                     ],
                     "next_tables": {
                         "tag_mid_action": "_condition_2",
-                        "tag_tail_action": "_condition_2"
+                        "tag_tail_action": "_condition_2",
+                        "multi_tag": "_condition_2"
                     },
                     "base_default_next": "_condition_2"
                 }
