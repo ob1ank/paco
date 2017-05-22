@@ -108,14 +108,13 @@ def main():
     for i in xrange(nb_switches):
         cmd = [args.cli, "--json", args.json,
                "--thrift-port", str(_THRIFT_BASE_PORT + i)]
-        if i == 0: 
-            command_file = "commands_s1.txt"
-        elif i == 6:
-            command_file = "commands_s7.txt"
-        elif i == 3:
-            command_file = "commands_mid.txt"
-        else:
+        tail = [1, 4, 7, 10, 13]
+        if i in tail:
             command_file = "commands_tail.txt"
+        elif i == 15:
+            command_file = "commands_s16.txt"
+        else:
+            command_file = "commands.txt"
         with open(command_file, "r") as f:
             print " ".join(cmd)
             try:
