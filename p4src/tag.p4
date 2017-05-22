@@ -100,6 +100,13 @@ action tag_tail_action(output_port) {
     shift_left(tag_head.tags, tag_head.tags, 8);
 }
 
+action multi_tag(number, new_tag, output_port){
+    bit_and(tag_head.tags, tag_head.tags, 0x00FFFFFF);
+    shift_right(tag_head.tags, tag_head.tags, 8 * number);
+    bit_or(tag_head.tags, tag_head.tags, new_tag);
+    modify_field(standard_metadata.egress_spec, output_port);
+}
+
 table deal_ipv4 {
     reads {
         ipv4.srcAddr : exact;
@@ -126,6 +133,7 @@ table deal_tag{
     actions{
         tag_mid_action;
         tag_tail_action;
+        multi_tag;
     }
 }
 
