@@ -290,59 +290,8 @@
     "meter_arrays": [],
     "actions": [
         {
-            "name": "tag_tail_action",
-            "id": 0,
-            "runtime_data": [
-                {
-                    "name": "output_port",
-                    "bitwidth": 9
-                }
-            ],
-            "primitives": [
-                {
-                    "op": "modify_field",
-                    "parameters": [
-                        {
-                            "type": "field",
-                            "value": [
-                                "standard_metadata",
-                                "egress_spec"
-                            ]
-                        },
-                        {
-                            "type": "runtime_data",
-                            "value": 0
-                        }
-                    ]
-                },
-                {
-                    "op": "shift_left",
-                    "parameters": [
-                        {
-                            "type": "field",
-                            "value": [
-                                "tag_head",
-                                "tags"
-                            ]
-                        },
-                        {
-                            "type": "field",
-                            "value": [
-                                "tag_head",
-                                "tags"
-                            ]
-                        },
-                        {
-                            "type": "hexstr",
-                            "value": "0x8"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
             "name": "tag_mid_action",
-            "id": 1,
+            "id": 0,
             "runtime_data": [
                 {
                     "name": "output_port",
@@ -370,7 +319,7 @@
         },
         {
             "name": "ipv42tag",
-            "id": 2,
+            "id": 1,
             "runtime_data": [
                 {
                     "name": "tags",
@@ -455,6 +404,57 @@
                         {
                             "type": "runtime_data",
                             "value": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "tag_tail_action",
+            "id": 2,
+            "runtime_data": [
+                {
+                    "name": "output_port",
+                    "bitwidth": 9
+                }
+            ],
+            "primitives": [
+                {
+                    "op": "modify_field",
+                    "parameters": [
+                        {
+                            "type": "field",
+                            "value": [
+                                "standard_metadata",
+                                "egress_spec"
+                            ]
+                        },
+                        {
+                            "type": "runtime_data",
+                            "value": 0
+                        }
+                    ]
+                },
+                {
+                    "op": "shift_left",
+                    "parameters": [
+                        {
+                            "type": "field",
+                            "value": [
+                                "tag_head",
+                                "tags"
+                            ]
+                        },
+                        {
+                            "type": "field",
+                            "value": [
+                                "tag_head",
+                                "tags"
+                            ]
+                        },
+                        {
+                            "type": "hexstr",
+                            "value": "0x8"
                         }
                     ]
                 }
