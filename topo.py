@@ -108,8 +108,8 @@ def main():
     for i in xrange(nb_switches):
         cmd = [args.cli, "--json", args.json,
                "--thrift-port", str(_THRIFT_BASE_PORT + i)]
-        mid = [2, 4, 6, 7, 8]
-        tail = [1, 3, 5, 9]
+        mid = [2, 4, 6, 8]
+        tail = [1, 3, 5, 7, 9]
         if i in tail:
             command_file = "commands_tail.txt"
         elif i in mid:
