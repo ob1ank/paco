@@ -291,100 +291,8 @@
     "meter_arrays": [],
     "actions": [
         {
-            "name": "ipv42tag",
-            "id": 0,
-            "runtime_data": [
-                {
-                    "name": "tags",
-                    "bitwidth": 32
-                },
-                {
-                    "name": "output_port",
-                    "bitwidth": 9
-                }
-            ],
-            "primitives": [
-                {
-                    "op": "add_header",
-                    "parameters": [
-                        {
-                            "type": "header",
-                            "value": "tag_head"
-                        }
-                    ]
-                },
-                {
-                    "op": "modify_field",
-                    "parameters": [
-                        {
-                            "type": "field",
-                            "value": [
-                                "tag_head",
-                                "ori_type"
-                            ]
-                        },
-                        {
-                            "type": "field",
-                            "value": [
-                                "ethernet",
-                                "etherType"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "op": "modify_field",
-                    "parameters": [
-                        {
-                            "type": "field",
-                            "value": [
-                                "ethernet",
-                                "etherType"
-                            ]
-                        },
-                        {
-                            "type": "hexstr",
-                            "value": "0x37"
-                        }
-                    ]
-                },
-                {
-                    "op": "modify_field",
-                    "parameters": [
-                        {
-                            "type": "field",
-                            "value": [
-                                "tag_head",
-                                "tags"
-                            ]
-                        },
-                        {
-                            "type": "runtime_data",
-                            "value": 0
-                        }
-                    ]
-                },
-                {
-                    "op": "modify_field",
-                    "parameters": [
-                        {
-                            "type": "field",
-                            "value": [
-                                "standard_metadata",
-                                "egress_spec"
-                            ]
-                        },
-                        {
-                            "type": "runtime_data",
-                            "value": 1
-                        }
-                    ]
-                }
-            ]
-        },
-        {
             "name": "multi_tag",
-            "id": 1,
+            "id": 0,
             "runtime_data": [
                 {
                     "name": "number",
@@ -495,6 +403,98 @@
                         {
                             "type": "runtime_data",
                             "value": 2
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "ipv42tag",
+            "id": 1,
+            "runtime_data": [
+                {
+                    "name": "tags",
+                    "bitwidth": 32
+                },
+                {
+                    "name": "output_port",
+                    "bitwidth": 9
+                }
+            ],
+            "primitives": [
+                {
+                    "op": "add_header",
+                    "parameters": [
+                        {
+                            "type": "header",
+                            "value": "tag_head"
+                        }
+                    ]
+                },
+                {
+                    "op": "modify_field",
+                    "parameters": [
+                        {
+                            "type": "field",
+                            "value": [
+                                "tag_head",
+                                "ori_type"
+                            ]
+                        },
+                        {
+                            "type": "field",
+                            "value": [
+                                "ethernet",
+                                "etherType"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "op": "modify_field",
+                    "parameters": [
+                        {
+                            "type": "field",
+                            "value": [
+                                "ethernet",
+                                "etherType"
+                            ]
+                        },
+                        {
+                            "type": "hexstr",
+                            "value": "0x37"
+                        }
+                    ]
+                },
+                {
+                    "op": "modify_field",
+                    "parameters": [
+                        {
+                            "type": "field",
+                            "value": [
+                                "tag_head",
+                                "tags"
+                            ]
+                        },
+                        {
+                            "type": "runtime_data",
+                            "value": 0
+                        }
+                    ]
+                },
+                {
+                    "op": "modify_field",
+                    "parameters": [
+                        {
+                            "type": "field",
+                            "value": [
+                                "standard_metadata",
+                                "egress_spec"
+                            ]
+                        },
+                        {
+                            "type": "runtime_data",
+                            "value": 1
                         }
                     ]
                 }
