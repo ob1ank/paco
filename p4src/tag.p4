@@ -67,8 +67,8 @@ parser parse_ethernet {
 parser parse_ipv4 {
     extract(ipv4);
     return select(ethernet.etherType){
-    ETHERTYPE_IPV4 : ingress;
-    ETHERTYPE_TAG : parse_tag;
+        ETHERTYPE_IPV4 : ingress;
+        ETHERTYPE_TAG : parse_tag;
     }
 }
 
