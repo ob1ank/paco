@@ -11,11 +11,12 @@ import sys
 
 def main():
     while(1):
-        raw =  raw_input("What do you want to send: ")
-        if raw=="q":
-            exit()
+        time.sleep(5)
+        #raw =  raw_input("What do you want to send: ")
+        #if raw=="q":
+        #    exit()
         now = time.time()
-        msg = "send_time: " + "%.6f" % float(now) + " msg: " + raw
+        msg = "send_time: " + "%.6f" % float(now) + " msg: "
         #msg = str(now) + " " + raw
 
         p = Ether() / IP(src="10.0.0.1", dst="10.0.0.2") / ICMP() / msg
