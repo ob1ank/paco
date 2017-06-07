@@ -1,1 +1,1 @@
-table_add tag0 tag0_mid_action 0x0/0 => 2
+table_add forward_paco pathlet_NULL_forward 0x0/32 => 2

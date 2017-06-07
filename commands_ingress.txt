@@ -1,1 +1,2 @@
-table_add deal_ipv4 ipv42tag 10.0.0.1 10.0.0.2 => 0x1020300 2
+table_add forward_ipv4 ipv42paco 10.0.0.1 10.0.0.2 => 10.0.0.1 10.0.0.2
+table_add enable_paco add_paco 10.0.0.1 10.0.0.2 => 0x1020300 2
