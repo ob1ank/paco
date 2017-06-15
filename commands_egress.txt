@@ -1,1 +1,1 @@
-table_add tag0 tag0_mid_action 0x0/32 => 2
+table_add deal_tag tag0_action 0x0/32 => 2
