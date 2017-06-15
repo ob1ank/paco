@@ -55,21 +55,24 @@ parser start {
 
 parser parse_ethernet {
     extract(ethernet);
-    /*
     return select(latest.etherType) {
         ETHERTYPE_IPV4 : parse_ipv4;
         ETHERTYPE_TAG : parse_tag;
     }
-    */
+    /*
     return parse_ipv4;
+    */
 }
 
 parser parse_ipv4 {
     extract(ipv4);
+    return ingress;
+    /*
     return select(ethernet.etherType){
         ETHERTYPE_IPV4 : ingress;
         ETHERTYPE_TAG : parse_tag;
     }
+    */
 }
 
 parser parse_tag {
@@ -89,7 +92,7 @@ action tag_mid_action(output_port) {
     modify_field(standard_metadata.egress_spec, output_port);
 }
 
-action tag0_mid_action(output_port) {
+action tag0_action(output_port) {
     modify_field(standard_metadata.egress_spec, output_port);
     modify_field(ethernet.etherType, tag_head.ori_type);
     remove_header(tag_head);
@@ -116,15 +119,6 @@ table deal_ipv4 {
         ipv42tag;
     }
 }
-        
-table tag0 {
-    reads {
-        tag_head.tags : lpm;
-    }
-    actions {
-        tag0_mid_action;
-    }
-}
 
 table deal_tag{
     reads {
@@ -133,20 +127,16 @@ table deal_tag{
     actions{
         tag_mid_action;
         tag_tail_action;
+        tag0_action;
         multi_tag;
     }
 }
 
 control ingress {
     if (ethernet.etherType == ETHERTYPE_TAG){
-        if (tag_head.tags != 0x0){
-            apply(deal_tag);
-        }
-        if (tag_head.tags == 0x0) {
-            apply(tag0);
-        }
+        apply(deal_tag);
     }
-    if (ethernet.etherType != ETHERTYPE_TAG){
+    if (ethernet.etherType == ETHERTYPE_IPV4){
         apply(deal_ipv4);
     }
 }
