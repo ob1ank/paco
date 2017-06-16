@@ -1,2 +1,4 @@
-table_add deal_tag tag_mid_action 0x4000000/8 => 4
-table_add deal_tag tag_mid_action 0x2000000/8 => 1
+table_add deal_tag tag_mid_action 0x3000000/8 => 3
+table_add deal_tag tag_mid_action 0x4000000/8 => 3
+table_add deal_tag tag_mid_action 0x5000000/8 => 3
+table_add deal_tag multi_tag 0x6000000/8 => 1 0x2030000 3
