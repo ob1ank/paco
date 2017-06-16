@@ -1,5 +1,0 @@
-table_add deal_ipv4 ipv42tag 10.0.0.1 10.0.0.2 => 0x1060500 2
-table_add deal_tag multi_tag 0x6000000/8 => 2 0x2030400 3
-table_add deal_tag tag_mid_action 0x3000000/8 => 3
-table_add deal_tag tag_mid_action 0x4000000/8 => 3
-table_add deal_tag tag_mid_action 0x5000000/8 => 3
