@@ -50,7 +50,9 @@ class MyTopo(Topo):
                                     sw_path = sw_path,
                                     json_path = json_path,
                                     thrift_port = _THRIFT_BASE_PORT + i,
-                                    pcap_dump = True,
+                                    log_console = False,
+                                    pcap_dump = False,
+                                    enable_debugger = False,
                                     device_id = i)
         
         for h in xrange(nb_hosts):
