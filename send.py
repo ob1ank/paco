@@ -11,7 +11,7 @@ import sys
 
 def main():
     while(1):
-        time.sleep(3)
+        #time.sleep(3)
         #raw =  raw_input("What do you want to send: ")
         #if raw=="q":
         #    exit()
