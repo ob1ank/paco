@@ -1,5 +1,5 @@
 switches 11
-hosts 2
+hosts 3
 h1 s1
 s1 s2
 s2 s3
@@ -12,3 +12,14 @@ s8 s9
 s9 s10
 s10 s11
 s11 h2
+s1 h3
+s2 h3
+s3 h3
+s4 h3
+s5 h3
+s6 h3
+s7 h3
+s8 h3
+s9 h3
+s10 h3
+s11 h3

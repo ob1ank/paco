@@ -50,7 +50,7 @@ class MyTopo(Topo):
                                     sw_path = sw_path,
                                     json_path = json_path,
                                     thrift_port = _THRIFT_BASE_PORT + i,
-                                    pcap_dump = True,
+                                    pcap_dump = False,
                                     device_id = i)
         
         for h in xrange(nb_hosts):
@@ -108,16 +108,7 @@ def main():
     for i in xrange(nb_switches):
         cmd = [args.cli, "--json", args.json,
                "--thrift-port", str(_THRIFT_BASE_PORT + i)]
-        mid = [1, 3, 4, 6, 7, 8]
-        tail = [2, 5, 9]
-        if i in tail:
-            command_file = "commands_tail.txt"
-        elif i in mid:
-            command_file = "commands_mid.txt"
-        elif i == 10:
-            command_file = "commands_egress.txt"
-        else:
-            command_file = "commands_ingress.txt"
+        command_file = "commands/commands_s" + '%d' %i + ".txt"
         with open(command_file, "r") as f:
             print " ".join(cmd)
             try:

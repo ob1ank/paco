@@ -7,15 +7,13 @@ header_type paco_head_t {
 
 header paco_head_t paco_head;
 
-header_type ingress_metadata_t{
+header_type cpu_header_t {
     fields {
-        pacoEnable : 1;
-        srcAddr	: 32;
-        dstAddr	: 32;
+        device: 8;
     }
 }
 
-metadata ingress_metadata_t route_metadata;
+header cpu_header_t cpu_header;
 
 header_type ethernet_t {
     fields {
@@ -47,24 +45,18 @@ header_type ipv4_t {
 header ipv4_t ipv4;
 
 parser start {
-    return parse_route_metadata;
+    return parse_ethernet;
 }
 
 #define ETHERTYPE_IPV4 0x0800
-#define ETHERTYPE_TAG 0x0037
-
-parser parse_route_metadata {
-    extract(ethernet);
-    return select(route_metadata.pacoEnable){
-        0x0 : parse_ethernet;
-        0x1 : ingress;
-    }
-}
+#define ETHERTYPE_PACO 0x0037
+#define CPU_MIRROR_SESSION_ID 250
 
 parser parse_ethernet{
+    extract(ethernet);
     return select(ethernet.etherType){
-        0x0800: parse_ipv4;
-        0x0037: parse_paco;
+        ETHERTYPE_IPV4: parse_ipv4;
+        ETHERTYPE_PACO: parse_paco;
     }
 }
 
@@ -78,29 +70,15 @@ parser parse_paco {
     return ingress;
 }
 
-field_list route_resubmit_list{
-	route_metadata.pacoEnable;
-	route_metadata.srcAddr;
-	route_metadata.dstAddr;
-}
-
-action ipv42paco(src, dst) {
-    modify_field(route_metadata.pacoEnable, 1);
-    modify_field(route_metadata.srcAddr, src);
-    modify_field(route_metadata.dstAddr, dst);
-    resubmit(route_resubmit_list);
-}
-
 action next_hop(output_port) {
     modify_field(standard_metadata.egress_spec, output_port);
 }
 
-action add_paco(id, output_port){
+action ipv42paco(ids, output_port){
     add_header(paco_head);
     modify_field(paco_head.ori_etherType, ethernet.etherType);
     modify_field(ethernet.etherType, 0x0037);
-    modify_field(paco_head.pathlet_ids, id);
-    modify_field(route_metadata.pacoEnable, 0);
+    modify_field(paco_head.pathlet_ids, ids);
     modify_field(standard_metadata.egress_spec, output_port);	
 }
 
@@ -119,6 +97,30 @@ action pathlet_tail_forward(output_port) {
     shift_left(paco_head.pathlet_ids, paco_head.pathlet_ids, 8);
 }
 
+action pathlet_multi_forward(number, new_ids, output_port){
+    bit_and(paco_head.pathlet_ids, paco_head.pathlet_ids, 0x00FFFFFF);
+    shift_right(paco_head.pathlet_ids, paco_head.pathlet_ids, 8 * number);
+    bit_or(paco_head.pathlet_ids, paco_head.pathlet_ids, new_ids);
+    modify_field(standard_metadata.egress_spec, output_port);
+}
+
+field_list copy2cpu_fields {
+    standard_metadata;
+}
+
+action copy2cpu{
+    clone_ingress_pkt_to_egress(CPU_MIRROR_SESSION_ID, copy2cpu_fields);
+}
+
+action _drop{
+    drop();
+}
+
+action do_cpu_encap(device_id) {
+    add_header(cpu_header);
+    modify_field(cpu_header.device, device_id);
+}
+
 table forward_ipv4 {
     reads {
         ipv4.srcAddr : exact;
@@ -127,6 +129,7 @@ table forward_ipv4 {
     actions {
         ipv42paco;
         next_hop;
+        copy2cpu;
     }
 }
 
@@ -138,27 +141,30 @@ table forward_paco{
         pathlet_mid_forward;
         pathlet_tail_forward;
         pathlet_NULL_forward;
+        pathlet_multi_forward;
+        copy2cpu;
     }
 }
 
-table enable_paco{
+table redirect {
     reads {
-        route_metadata.srcAddr : exact;
-        route_metadata.dstAddr : exact;
+        standard_metadata.instance_type : exact;
     }
-    actions{
-        add_paco;
+    actions {
+        _drop;
+        do_cpu_encap;
     }
 }
 
 control ingress {
-    if (ethernet.etherType == 0x0037){
+    if (ethernet.etherType == ETHERTYPE_PACO){
         apply(forward_paco);
     }
-    if (ethernet.etherType == 0x0800 and route_metadata.pacoEnable == 0){
+    if (ethernet.etherType == ETHERTYPE_IPV4){
         apply(forward_ipv4);
     }
-    if (route_metadata.pacoEnable == 1){
-        apply(enable_paco);
-    }
+}
+
+control egress {
+    apply(redirect);
 }
