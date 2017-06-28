@@ -50,7 +50,7 @@ class MyTopo(Topo):
                                     sw_path = sw_path,
                                     json_path = json_path,
                                     thrift_port = _THRIFT_BASE_PORT + i,
-                                    log_console = False,
+                                    log_console = True,
                                     pcap_dump = False,
                                     enable_debugger = True,
                                     device_id = i)
@@ -106,20 +106,19 @@ def main():
         h.cmd("iptables -I OUTPUT -p icmp --icmp-type destination-unreachable -j DROP")
 
     sleep(1)
-
-    for i in xrange(nb_switches):
-        cmd = [args.cli, "--json", args.json,
-               "--thrift-port", str(_THRIFT_BASE_PORT + i)]
-        command_file = "commands/commands_s" + '%d' %(i+1) + ".txt"
-        with open(command_file, "r") as f:
-            print " ".join(cmd)
-            try:
-                output = subprocess.check_output(cmd, stdin = f)
-                print output
-            except subprocess.CalledProcessError as e:
-                print e
-                print e.output
-
+#    for i in xrange(nb_switches):
+#        sswitch_cli = "/home/snail/apps/behavioral-model/targets/simple_switch/sswitch_CLI"
+#        cmd = [sswitch_cli, "--json", args.json,
+#               "--thrift-port", str(_THRIFT_BASE_PORT + i)]
+#        command_file = "commands/commands_s" + '%d' %(i+1) + ".txt"
+#        with open(command_file, "r") as f:
+#            print " ".join(cmd)
+#            try:
+#                output = subprocess.check_output(cmd, stdin = f)
+#                print output
+#            except subprocess.CalledProcessError as e:
+#                print e
+#                print e.output
     sleep(1)
 
     print "Ready !"

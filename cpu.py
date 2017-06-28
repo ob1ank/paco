@@ -7,6 +7,8 @@ import subprocess
 import sys
 import struct
 
+finish = []
+
 ETHER_TYPES = DADict(_name="/etc/ethertypes")
 ETHER_TYPES['paco'] = 0x0037
 ETHER_TYPES['IP'] = 0x0800
@@ -59,6 +61,8 @@ def install_table(device_id):
             print e.output
 
 def deal_ip(pkt):
+    if 1 in finish:
+        return
     pkt_str = str(pkt)
 
     # MyEther
@@ -82,8 +86,12 @@ def deal_ip(pkt):
     # send
     interface = "s1-eth3"
     sendp(MyEther(dst=mac_dst,src=mac_src,ethertype=ETHER_TYPES[ethertype]) / IP(dst=ip_dst,src=ip_src) / ICMP() / raw, iface=interface)
+    
+    finish.append(1)
 
 def deal_paco(pkt, device_id):
+    if device_id in finish:
+        return
     pkt_str = str(pkt)
 
     # MyEther
@@ -112,6 +120,8 @@ def deal_paco(pkt, device_id):
     # send
     interface = "s"+ '%d' %(device_id) + "-eth3"
     sendp(MyEther(dst=mac_dst,src=mac_src,ethertype=ETHER_TYPES[ethertype]) / Paco(ids=eval(ids),ori_ethertype=eval(ori_ethertype)) / IP(dst=ip_dst,src=ip_src) / ICMP() / raw, iface=interface)
+    
+    finish.append(device_id)
 
 def handle_pkt(pkt):
     #print "Receive 1 package, msg: " + pkt.sprintf("%Raw.load%")
