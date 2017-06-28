@@ -47,7 +47,7 @@ def install_table(device_id):
     else:
         command_file = "commands_ingress.txt"
     bm_cli = "/home/snail/apps/behavioral-model/tools/runtime_CLI.py"
-    json = "/home/snail/apps/p4projects/tag/paco.json"
+    json = "paco.json"
     cmd = [bm_cli, "--json", json,
            "--thrift-port", str(22222 + device_id - 1)]
     with open(command_file, "r") as f:

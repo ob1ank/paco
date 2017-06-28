@@ -1,1 +1,2 @@
 table_add forward_paco pathlet_NULL_forward 0x0/32 => 2
+table_add forward_ipv4 next_hop 10.0.0.1 10.0.0.2 => 2
