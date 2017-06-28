@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 switches 11
 hosts 3
+=======
+switches 16
+hosts 2
+>>>>>>> 72d349f90407c0440020dfb8e54fe8b0ad87b7a7
 h1 s1
 s1 s2
 s2 s3
@@ -8,6 +13,7 @@ s4 s5
 s5 s6
 s6 s7
 s7 s8
+<<<<<<< HEAD
 s8 s9
 s9 s10
 s10 s11
@@ -23,3 +29,17 @@ s8 h3
 s9 h3
 s10 h3
 s11 h3
+=======
+s7 s9
+s8 s10
+s9 s10
+s10 s11
+s10 s12
+s11 s13
+s12 s13
+s13 s14
+s13 s15
+s14 s16
+s15 s16
+s16 h2
+>>>>>>> 72d349f90407c0440020dfb8e54fe8b0ad87b7a7
