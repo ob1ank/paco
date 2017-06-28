@@ -45,7 +45,15 @@ header_type ipv4_t {
 header ipv4_t ipv4;
 
 parser start {
-    return parse_ethernet;
+    return select(current(0,128)) {
+        0 : parse_cpu_header;
+        default : parse_ethernet;
+    }
+}
+
+parser parse_cpu_header {
+    extract(cpu_header);
+    return ingress;
 }
 
 #define ETHERTYPE_IPV4 0x0800
@@ -108,11 +116,11 @@ field_list copy2cpu_fields {
     standard_metadata;
 }
 
-action copy2cpu{
+action copy2cpu() {
     clone_ingress_pkt_to_egress(CPU_MIRROR_SESSION_ID, copy2cpu_fields);
 }
 
-action _drop{
+action _drop() {
     drop();
 }
 
