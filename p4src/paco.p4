@@ -120,8 +120,11 @@ action copy2cpu() {
     clone_ingress_pkt_to_egress(CPU_MIRROR_SESSION_ID, copy2cpu_fields);
 }
 
-action _drop() {
+action forward() {
+    modify_field(standard_metadata.egress_spec, standard_metadata.egress_spec);
+    /*
     drop();
+    */
 }
 
 action do_cpu_encap(device_id) {
@@ -159,7 +162,7 @@ table redirect {
         standard_metadata.instance_type : exact;
     }
     actions {
-        _drop;
+        forward;
         do_cpu_encap;
     }
 }
