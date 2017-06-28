@@ -9,7 +9,7 @@ header paco_head_t paco_head;
 
 header_type cpu_header_t {
     fields {
-        device_id: 8;
+        device: 8;
     }
 }
 
@@ -45,11 +45,13 @@ header_type ipv4_t {
 header ipv4_t ipv4;
 
 parser start {
-    /* always parse_ethernet */
+    return parse_ethernet;
+    /*
     return select(current(0,128)) {
         0 : parse_cpu_header;
         default : parse_ethernet;
     }
+    */
 }
 
 parser parse_cpu_header {
@@ -59,6 +61,7 @@ parser parse_cpu_header {
 
 #define ETHERTYPE_IPV4 0x0800
 #define ETHERTYPE_PACO 0x0037
+#define CPU_MIRROR_SESSION_ID 250
 
 parser parse_ethernet{
     extract(ethernet);
@@ -112,10 +115,24 @@ action pathlet_multi_forward(number, new_ids, output_port){
     modify_field(standard_metadata.egress_spec, output_port);
 }
 
-action copy2cpu(device_id, cpu_port) {
+field_list copy2cpu_fields {
+    standard_metadata;
+}
+
+action copy2cpu() {
+    clone_ingress_pkt_to_egress(CPU_MIRROR_SESSION_ID, copy2cpu_fields);
+}
+
+action forward() {
+    /*
+    modify_field(standard_metadata.egress_spec, standard_metadata.egress_spec);
+    drop();
+    */
+}
+
+action do_cpu_encap(device_id) {
     add_header(cpu_header);
-    modify_field(cpu_header.device_id, device_id);
-    modify_field(standard_metadata.egress_spec, cpu_port);
+    modify_field(cpu_header.device, device_id);
 }
 
 table forward_ipv4 {
@@ -143,6 +160,16 @@ table forward_paco{
     }
 }
 
+table redirect {
+    reads {
+        standard_metadata.instance_type : exact;
+    }
+    actions {
+        forward;
+        do_cpu_encap;
+    }
+}
+
 control ingress {
     if (ethernet.etherType == ETHERTYPE_PACO){
         apply(forward_paco);
@@ -150,4 +177,8 @@ control ingress {
     if (ethernet.etherType == ETHERTYPE_IPV4){
         apply(forward_ipv4);
     }
+}
+
+control egress {
+    apply(redirect);
 }
