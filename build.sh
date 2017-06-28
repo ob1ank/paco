@@ -22,11 +22,7 @@ SWITCH_PATH=$BMV2_PATH/targets/simple_switch/simple_switch
 
 CLI_PATH=$BMV2_PATH/tools/runtime_CLI.py
 
-<<<<<<< HEAD
 $P4C_BM_SCRIPT p4src/paco.p4 --json paco.json
-=======
-$P4C_BM_SCRIPT p4src/tag.p4 --json tag.json
->>>>>>> 72d349f90407c0440020dfb8e54fe8b0ad87b7a7
 # This gives libtool the opportunity to "warm-up"
 #sudo $SWITCH_PATH >/dev/null 2>&1
 #sudo PYTHONPATH=$PYTHONPATH:$BMV2_PATH/mininet/ python topo.py \

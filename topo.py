@@ -50,13 +50,9 @@ class MyTopo(Topo):
                                     sw_path = sw_path,
                                     json_path = json_path,
                                     thrift_port = _THRIFT_BASE_PORT + i,
-<<<<<<< HEAD
                                     log_console = True,
                                     pcap_dump = False,
                                     enable_debugger = True,
-=======
-                                    pcap_dump = False,
->>>>>>> 72d349f90407c0440020dfb8e54fe8b0ad87b7a7
                                     device_id = i)
         
         for h in xrange(nb_hosts):
@@ -110,7 +106,6 @@ def main():
         h.cmd("iptables -I OUTPUT -p icmp --icmp-type destination-unreachable -j DROP")
 
     sleep(1)
-<<<<<<< HEAD
 #    for i in xrange(nb_switches):
 #        sswitch_cli = "/home/snail/apps/behavioral-model/targets/simple_switch/sswitch_CLI"
 #        cmd = [sswitch_cli, "--json", args.json,
@@ -124,31 +119,6 @@ def main():
 #            except subprocess.CalledProcessError as e:
 #                print e
 #                print e.output
-=======
-
-    for i in xrange(nb_switches):
-        cmd = [args.cli, "--json", args.json,
-               "--thrift-port", str(_THRIFT_BASE_PORT + i)]
-        mid = [3, 6, 9, 12]
-        tail = [1, 4, 7, 10, 13]
-        if i in tail:
-            command_file = "commands_tail.txt"
-        elif i in mid:
-            command_file = "commands_mid.txt"
-        elif i == 15:
-            command_file = "commands_egress.txt"
-        else:
-            command_file = "commands_ingress.txt"
-        with open(command_file, "r") as f:
-            print " ".join(cmd)
-            try:
-                output = subprocess.check_output(cmd, stdin = f)
-                print output
-            except subprocess.CalledProcessError as e:
-                print e
-                print e.output
-
->>>>>>> 72d349f90407c0440020dfb8e54fe8b0ad87b7a7
     sleep(1)
 
     print "Ready !"
