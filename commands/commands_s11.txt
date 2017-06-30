@@ -1,2 +1,1 @@
 table_set_default forward_paco copy2cpu 11 3
-table_set_default forward_ipv4 copy2cpu 11 3
