@@ -37,7 +37,7 @@ class Paco(Packet):
 def str2mac(s):
     return ("%02x:"*6)[:-1] % tuple(map(ord, s))
 
-def install_table(device_id):
+def install_table(device_id, ip_number):
     mid = [2, 4, 5, 7, 8, 9]
     tail = [3, 6, 10]
     if device_id in tail:
@@ -47,7 +47,7 @@ def install_table(device_id):
     elif device_id == 11:
         command_file = "commands_egress.txt"
     else:
-        command_file = "commands_ingress.txt"
+        command_file = "commands_ip/" + ip_number + ".txt"
     bm_cli = "/home/snail/apps/behavioral-model/tools/runtime_CLI.py"
     json = "paco.json"
     cmd = [bm_cli, "--json", json,
@@ -61,8 +61,8 @@ def install_table(device_id):
             print e.output
 
 def deal_ip(pkt):
-    if 1 in finish:
-        return
+    #if 1 in finish:
+    #    return
     pkt_str = str(pkt)
 
     # MyEther
@@ -77,12 +77,13 @@ def deal_ip(pkt):
     ip = IP(pkt_str[15:])
     ip_dst = ip.sprintf("%IP.dst%")
     ip_src = ip.sprintf("%IP.src%")
+    ip_number = ip_src[7:]
     raw = ip.sprintf("%Raw.load%")[1:-1]
-    if ip_src != '10.0.0.1' or ip_dst != '10.0.0.2':
+    if ip_src[:7] != '10.0.0.' or ip_dst != '10.0.0.2':
         return
 
     print "s1 receive."
-    install_table(1)
+    install_table(1, ip_number)
     # send
     interface = "s1-eth3"
     sendp(MyEther(dst=mac_dst,src=mac_src,ethertype=ETHER_TYPES[ethertype]) / IP(dst=ip_dst,src=ip_src) / ICMP() / raw, iface=interface)
@@ -116,7 +117,7 @@ def deal_paco(pkt, device_id):
         return
     
     print 's' + '%d' %device_id + ' receive.'
-    install_table(device_id)
+    install_table(device_id, 1)
     # send
     interface = "s"+ '%d' %(device_id) + "-eth3"
     sendp(MyEther(dst=mac_dst,src=mac_src,ethertype=ETHER_TYPES[ethertype]) / Paco(ids=eval(ids),ori_ethertype=eval(ori_ethertype)) / IP(dst=ip_dst,src=ip_src) / ICMP() / raw, iface=interface)

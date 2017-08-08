@@ -10,8 +10,9 @@ import networkx as nx
 import sys
 
 def main():
-    while(1):
-        time.sleep(4)
+    i = 0
+    while(i < 200):
+        #time.sleep(1)
         #raw =  raw_input("What do you want to send: ")
         #if raw=="q":
         #    exit()
@@ -19,8 +20,9 @@ def main():
         msg = "send_time: " + "%.6f" % float(now) + " msg: "
         #msg = str(now) + " " + raw
 
-        p = Ether() / IP(src="10.0.0.1", dst="10.0.0.2") / ICMP() / msg
+        p = Ether() / IP(src="10.0.0." + str(i+1), dst="10.0.0.2") / ICMP() / msg
         sendp(p, iface = "eth0")
+        i = i + 1
         # print msg
 
 if __name__ == '__main__':

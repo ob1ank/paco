@@ -10,7 +10,8 @@ import time
 def handle_pkt(pkt):
     print pkt.sprintf("Raw: %Raw.load%")
     now = time.time()
-    print "receive_time: " + "%.6f" % float(now) + "\n"
+    print "receive_time: " + "%.6f" % float(now)
+    print "ip_src: " + pkt.sprintf("%IP.src%") + "\n"
     sys.stdout.flush()
 
 def main():
