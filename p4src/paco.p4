@@ -45,13 +45,13 @@ header_type ipv4_t {
 header ipv4_t ipv4;
 
 parser start {
-    return parse_ethernet;
     /*
+    return parse_ethernet;
+    */
     return select(current(0,128)) {
         0 : parse_cpu_header;
         default : parse_ethernet;
     }
-    */
 }
 
 parser parse_cpu_header {
