@@ -27,5 +27,5 @@ CLI_PATH=$BMV2_PATH/tools/runtime_CLI.py
 sudo $SWITCH_PATH >/dev/null 2>&1
 sudo PYTHONPATH=$PYTHONPATH:$BMV2_PATH/mininet/ python topo.py \
     --behavioral-exe $SWITCH_PATH \
-    --json paco.json \
+    --json openflow.json \
     --cli $CLI_PATH
