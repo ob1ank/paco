@@ -1,3 +1,0 @@
-table_add forward_paco pathlet_tail_forward 0x1000000/8 => 2
-table_add forward_paco pathlet_tail_forward 0x2000000/8 => 2
-table_add forward_paco pathlet_tail_forward 0x3000000/8 => 2

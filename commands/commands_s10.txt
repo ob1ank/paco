@@ -1,5 +1,4 @@
 table_add redirect do_cpu_encap 1 => 10
 table_set_default redirect forward
-table_set_default forward_paco copy2cpu
-table_set_default forward_ipv4 copy2cpu
+table_set_default deal_ipv4 copy2cpu
 mirroring_add 250 3

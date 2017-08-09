@@ -107,29 +107,29 @@ def main():
 
     sleep(1)
 
-    for i in xrange(nb_switches):
-        if i == 0:
-            continue
-        cmd = [args.cli, "--json", args.json,
-               "--thrift-port", str(_THRIFT_BASE_PORT + i)]
-        mid = [1, 3, 4, 6, 7, 8]
-        tail = [2, 5, 9]
-        if i in tail:
-            command_file = "commands_tail.txt"
-        elif i in mid:
-            command_file = "commands_mid.txt"
-        elif i == 10:
-            command_file = "commands_egress.txt"
-        else:
-            command_file = "commands_ingress.txt"
-        with open(command_file, "r") as f:
-            print " ".join(cmd)
-            try:
-                output = subprocess.check_output(cmd, stdin = f)
-                print output
-            except subprocess.CalledProcessError as e:
-                print e
-                print e.output
+#    for i in xrange(nb_switches):
+#        if i == 0:
+#            continue
+#        cmd = [args.cli, "--json", args.json,
+#               "--thrift-port", str(_THRIFT_BASE_PORT + i)]
+#        mid = [1, 3, 4, 6, 7, 8]
+#        tail = [2, 5, 9]
+#        if i in tail:
+#            command_file = "commands_tail.txt"
+#        elif i in mid:
+#            command_file = "commands_mid.txt"
+#        elif i == 10:
+#            command_file = "commands_egress.txt"
+#        else:
+#            command_file = "commands_ingress.txt"
+#        with open(command_file, "r") as f:
+#            print " ".join(cmd)
+#            try:
+#                output = subprocess.check_output(cmd, stdin = f)
+#                print output
+#            except subprocess.CalledProcessError as e:
+#                print e
+#                print e.output
 
     sleep(1)
 

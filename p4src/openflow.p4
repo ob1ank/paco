@@ -1,3 +1,5 @@
+#define CPU_MIRROR_SESSION_ID 250
+
 header_type ethernet_t {
     fields {
         dstAddr : 48;
