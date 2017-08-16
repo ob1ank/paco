@@ -37,19 +37,19 @@ class Paco(Packet):
 def str2mac(s):
     return ("%02x:"*6)[:-1] % tuple(map(ord, s))
 
-def install_table(device_id, ip_number):
+def install_table(ip_number):
     command_file = "commands_ip/" + ip_number + ".txt"
     bm_cli = "/home/snail/apps/behavioral-model/tools/runtime_CLI.py"
     json = "openflow.json"
-    cmd = [bm_cli, "--json", json,
-           "--thrift-port", str(22222 + device_id - 1)]
-    with open(command_file, "r") as f:
-        try:
-            output = subprocess.check_output(cmd, stdin = f)
-            print output
-        except subprocess.CalledProcessError as e:
-            print e
-            print e.output
+    for i in xrange(11):
+        cmd = [bm_cli, "--json", json, "--thrift-port", str(22222 + i)]
+        with open(command_file, "r") as f:
+            try:
+                output = subprocess.check_output(cmd, stdin = f)
+                print output
+            except subprocess.CalledProcessError as e:
+                print e
+                print e.output
 
 def deal_ip(pkt, device_id):
     #if 1 in finish:
@@ -74,7 +74,7 @@ def deal_ip(pkt, device_id):
         return
 
     print 's' + '%d' %device_id + ' receive.'
-    install_table(device_id, ip_number)
+    install_table(ip_number)
     # send
     interface = "s"+ '%d' %(device_id) + "-eth3"
     sendp(MyEther(dst=mac_dst,src=mac_src,ethertype=ETHER_TYPES[ethertype]) / IP(dst=ip_dst,src=ip_src) / ICMP() / raw, iface=interface)
@@ -95,7 +95,7 @@ def handle_pkt(pkt):
     #    _ethertype = 0x0037
     #else:
     #    return
-    if device_id > 0 and device_id < 12:
+    if device_id == 1:
         deal_ip(pkt, device_id)
     else:
         return
