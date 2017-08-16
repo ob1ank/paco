@@ -41,7 +41,7 @@ def install_table(ip_number):
     command_file = "commands_ip/" + ip_number + ".txt"
     bm_cli = "/home/snail/apps/behavioral-model/tools/runtime_CLI.py"
     json = "openflow.json"
-    for i in xrange(11):
+    for i in xrange(5):
         cmd = [bm_cli, "--json", json, "--thrift-port", str(22222 + i)]
         with open(command_file, "r") as f:
             try:
@@ -102,7 +102,7 @@ def handle_pkt(pkt):
 
 def main():
     #sniff(filter="icmp", prn = lambda x: handle_pkt(x))
-    sniff(iface=["s1-eth3","s2-eth3","s3-eth3","s4-eth3","s5-eth3","s6-eth3","s7-eth3","s8-eth3","s9-eth3","s10-eth3","s11-eth3"],prn = lambda x: handle_pkt(x))
+    sniff(iface="s1-eth3",prn = lambda x: handle_pkt(x))
 
 if __name__ == '__main__':
     main()
