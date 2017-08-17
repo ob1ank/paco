@@ -41,7 +41,7 @@ def install_table(ip_number):
     command_file = "commands_ip/" + ip_number + ".txt"
     bm_cli = "/home/snail/apps/behavioral-model/tools/runtime_CLI.py"
     json = "openflow.json"
-    for i in xrange(5):
+    for i in xrange(3):
         cmd = [bm_cli, "--json", json, "--thrift-port", str(22222 + i)]
         with open(command_file, "r") as f:
             try:
