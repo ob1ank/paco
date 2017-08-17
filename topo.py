@@ -112,13 +112,13 @@ def main():
             continue
         cmd = [args.cli, "--json", args.json,
                "--thrift-port", str(_THRIFT_BASE_PORT + i)]
-        mid = [2]
-        tail = [1, 3]
+        mid = []
+        tail = [1]
         if i in tail:
             command_file = "commands_tail.txt"
         elif i in mid:
             command_file = "commands_mid.txt"
-        elif i == 4:
+        elif i == 2:
             command_file = "commands_egress.txt"
         else:
             command_file = "commands_ingress.txt"

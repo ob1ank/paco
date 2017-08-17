@@ -1,1 +1,1 @@
-table_add forward_ipv4 ipv42paco 10.0.0.12 10.0.0.2 => 0x1020000 2
+table_add forward_ipv4 ipv42paco 10.0.0.12 10.0.0.2 => 0x1000000 2
