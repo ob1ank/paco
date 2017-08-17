@@ -1,4 +1,4 @@
-switches 11
+switches 7
 hosts 3
 h1 s1
 s1 s2
