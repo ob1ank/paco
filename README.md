@@ -2,7 +2,7 @@
 
 > This repository is the code that simulates the paco protocol and compares the paco protocol with the openflow protocol. The p4<sub>14</sub> code that implements the paco protocol can be seen in [paco.p4](https://github.com/an15m/paco/blob/master/p4src/paco.p4).
 > 
-> It toal include 3 experiments.
+> It total include 3 experiments.
 > - [paco simulate experiment](#paco-simulate-experiment)
 > - [paco time delay experiment](#paco-time-delay-experiment)
 > - [paco compares with openflow experiment](#paco-compares-with-openflow-experiment)
