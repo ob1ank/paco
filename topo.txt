@@ -1,5 +1,5 @@
 switches 7
-hosts 2
+hosts 3
 h1 s1
 s1 s2
 s1 s3
@@ -10,3 +10,10 @@ s4 s6
 s5 s7
 s6 s7
 s7 h2
+s1 h3
+s2 h3
+s3 h3
+s4 h3
+s5 h3
+s6 h3
+s7 h3

@@ -108,6 +108,8 @@ def main():
     sleep(1)
     # xia fa biao xiang
     for i in xrange(nb_switches):
+	if i == 0:
+	    continue
         cmd = [args.cli, "--json", args.json,
                "--thrift-port", str(_THRIFT_BASE_PORT + i)]
         command_file = "commands/commands_s" + '%d' %(i+1) + ".txt"
