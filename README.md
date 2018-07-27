@@ -85,7 +85,7 @@ pip install scapy
 
 ## paco simulate experiment
 
-> The first experiment is to simulates the paco protocol. The code is on the *master* branch.
+> The first experiment is to simulates the paco protocol. The code is on the `master` branch.
 
 0. Preparations:
    - Change the `BMV2_PATH` and `P4C_BM_PATH` variables in `build.sh` to your own
@@ -120,7 +120,7 @@ pip install scapy
 
 > This experiment is to compare the link delay of the switch when running the openflow protocol.
 > 
-> The code is on the *openflow-time-delay* branch.
+> The code is on the `openflow-time-delay` branch.
 
 0. Preparations:
    - Change the `BMV2_PATH` and `P4C_BM_PATH` variables in `build.sh` to your own
