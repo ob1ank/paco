@@ -23,10 +23,10 @@ SWITCH_PATH=$BMV2_PATH/targets/simple_switch/simple_switch
 
 CLI_PATH=$BMV2_PATH/tools/runtime_CLI.py
 
-#$P4C_BM_SCRIPT p4src/tag.p4 --json tag.json
+$P4C_BM_SCRIPT p4src/paco.p4 --json paco.json
 # This gives libtool the opportunity to "warm-up"
-sudo $SWITCH_PATH >/dev/null 2>&1
-sudo PYTHONPATH=$PYTHONPATH:$BMV2_PATH/mininet/ python topo.py \
-    --behavioral-exe $SWITCH_PATH \
-    --json paco.json \
-    --cli $CLI_PATH
+#sudo $SWITCH_PATH >/dev/null 2>&1
+#sudo PYTHONPATH=$PYTHONPATH:$BMV2_PATH/mininet/ python topo.py \
+#    --behavioral-exe $SWITCH_PATH \
+#    --json tag.json \
+#    --cli $CLI_PATH

@@ -50,7 +50,9 @@ class MyTopo(Topo):
                                     sw_path = sw_path,
                                     json_path = json_path,
                                     thrift_port = _THRIFT_BASE_PORT + i,
-                                    pcap_dump = True,
+                                    log_console = False,
+                                    pcap_dump = False,
+                                    enable_debugger = True,
                                     device_id = i)
         
         for h in xrange(nb_hosts):
@@ -104,18 +106,11 @@ def main():
         h.cmd("iptables -I OUTPUT -p icmp --icmp-type destination-unreachable -j DROP")
 
     sleep(1)
-
+    # xia fa biao xiang
     for i in xrange(nb_switches):
         cmd = [args.cli, "--json", args.json,
                "--thrift-port", str(_THRIFT_BASE_PORT + i)]
-        if i == 0: 
-            command_file = "commands_s1.txt"
-        elif i == 6:
-            command_file = "commands_s7.txt"
-        elif i == 3:
-            command_file = "commands_mid.txt"
-        else:
-            command_file = "commands_tail.txt"
+        command_file = "commands/commands_s" + '%d' %(i+1) + ".txt"
         with open(command_file, "r") as f:
             print " ".join(cmd)
             try:
