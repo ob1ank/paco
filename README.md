@@ -7,7 +7,12 @@
 > - [paco time delay experiment](#paco-time-delay-experiment)
 > - [paco compares with openflow experiment](#paco-compares-with-openflow-experiment)
 >
-> All of the three experiments hava same topology. To run the experiments, you need first install the [Requirements](#requirements)
+> All of the three experiments hava same topology(as the following picture show). 
+> But only [paco compares with openflow experiment](#paco-compares-with-openflow-experiment) uses controller.
+> 
+> ![topology](https://github.com/an15m/paco/blob/master/topology.png)
+>
+> To run the experiments, you need first install the [Requirements](#requirements)
 
 ## Requirements
 
